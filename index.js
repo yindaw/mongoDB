@@ -1,32 +1,38 @@
-const { User } = require("./models");
+var { User, Operation } = require("./models");
 
-var obj = {
-    loginId: "user11",
-    loginPwd: "sdsfdgh",
-    name: "邓哥",
-    abc: 1,
-    loves: ["秋葵", "香菜"],
-    address: {
-        province: "accc",
-        city: "哈尔滨"
-    }
-};
-
-
-
-// async function test () {
-//     var u = new User(obj);
-//     var result = await u.save();
-//     console.log(result);
-// }
-
-
+const ObjectId = require("mongoose").Types.ObjectId;
 
 async function test () {
-    const result = await User.create(obj);
-    //     validateBeforeSave: false
-    // });
-    // console.log(result);
-    // User.validate(obj);
+//    const result = await User.findById(ObjectId("5ed093872e3da2b654983484"), {
+//        name: 1,
+//        age: 1
+//    });
+
+
+// const result = await User.findOne({
+//     age: {
+//         $gt: 20,
+//     }
+// });
+
+
+// const page = 3;
+// const limit = 10;
+// const result = await User.find({
+//     age: {
+//         $gt: 30
+//     },
+// }, {
+//     name: 1,
+//     age: 1
+// }).skip(page - 1).limit(limit).sort({age: 1});
+//    console.log(result);
+
+
+
+
+//const result = await User.find().limit(1).populate("operations");
+//console.log(result);
 }
 test();
+
