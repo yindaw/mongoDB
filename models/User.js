@@ -1,3 +1,4 @@
+
 var mongoose = require("mongoose");
 const { updateIfCurrentPlugin } = require("../mongoose-update-if-current/lib");
 var Schema = mongoose.Schema;
@@ -37,7 +38,36 @@ var userSchema = new Schema({
     type: addressSchema,
     required: true,
   },
+  info: {
+    type: String,
+    virtual: true,
+    get() {
+        return `${this.name}, 年龄：${this.age}`;
+    }
+  },
   operations: [{ type: Schema.Types.ObjectId, ref: "Operation" }],
 });
+userSchema.methods.print = function () {
+    console.log(`姓名：${this.name}
+    年龄：${this.age}
+    爱好：${this.loves.join(",")}`);
+}
+
+userSchema.static("getUsers", async function ( page = 1, limit = 10, keyWords = "") {
+   const skip = (page - 1) * limit; 
+   const reg = new RegExp(keyWords);
+   const filter = {
+       $or: [
+           {name: reg},
+           {loginId: reg}
+       ]
+   }
+   const total = await this.countDocuments(filter);
+   const datas = await this.find(filter).skip(skip).limit(limit);
+   return {
+       total,
+       datas
+   }
+})
 userSchema.plugin(updateIfCurrentPlugin);
 module.exports = mongoose.model("User", userSchema);
